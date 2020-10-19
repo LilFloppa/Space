@@ -8,6 +8,6 @@
         Title="MainWindow" Height="450" Width="800" Closing="Window_Closing">
     <Grid>
 
-        <Canvas x:Name="Scene" MouseMove="CanvasOnMouseMove" ClipToBounds="True"></Canvas>
+        <Canvas x:Name="Scene" ClipToBounds="True"></Canvas>
     </Grid>
 </Window>

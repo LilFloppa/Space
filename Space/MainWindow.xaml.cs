@@ -29,7 +29,9 @@ namespace Space
 
         bool isRunning = true;
 
-        Point MousePos;
+        DateTime lastFrameTime = DateTime.Now;
+
+        DispatcherTimer timer = new DispatcherTimer();
         public MainWindow()
         {
             InitializeComponent();
@@ -39,53 +41,38 @@ namespace Space
 
             image.Height = bitmap.Height;
             image.Width = bitmap.Width;
-            sbg = new ScrollingBackground(image, 4.0);
+            sbg = new ScrollingBackground(image, 400.0);
 
-            Thread gameThread = new Thread(MainLoop);
-            gameThread.Start();
+            CompositionTarget.Rendering += GameFrame;
         }
 
-        private void MainLoop()
+        private void GameFrame(object sender, EventArgs e)
         {
-            bool running = false;
-            Dispatcher.Invoke(() => running = isRunning);
+            DateTime currentFrameTime = DateTime.Now;
+            TimeSpan dt = currentFrameTime - lastFrameTime;
+            lastFrameTime = currentFrameTime;
 
-            while (running)
+            if (isRunning)
             {
                 Input();
-                Update();
+                Update(dt.Milliseconds / 1000.0);
                 Draw();
-                Dispatcher.Invoke(() => running = isRunning);
             }
-
-            Dispatcher.Invoke(() => Close());
         }
 
         private void Input()
         {
         }
 
-        private void Update()
+        private void Update(double dt)
         {
-            // Полностью обновлять состояние игры
-            sbg.Update(0.01);
+            sbg.Update(dt);
         }
 
         private void Draw()
         {
-            // Отрисовывать все на канвас
-            Dispatcher.Invoke(() =>
-            {
-                Scene.Children.Clear();
-                sbg.Draw(Scene);
-
-            });
-        }
-
-        private void CanvasOnMouseMove(object sender, MouseEventArgs e)
-        {
-            //MousePos = e.GetPosition(this);
-           // Console.WriteLine("{0} {1}" , MousePos.X.ToString(), MousePos.Y.ToString());
+            Scene.Children.Clear();
+            sbg.Draw(Scene);
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
