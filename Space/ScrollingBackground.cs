@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace Space
@@ -10,24 +12,24 @@ namespace Space
         public double Velocity { get; private set; } = 0.0;
         public double Offset { get; private set; } = 0.0;
 
-        public Image Background1 { get; private set; }
-        public Image Background2 { get; private set; }
+        public Rect BGRect1 { get; set; }
+        public Rect BGRect2 { get; set; }
+
+        public BitmapImage Image { get; set; }
 
         public double Width { get; private set; }
         public double Height { get; private set; }
         
-        public ScrollingBackground(Image background, double velocity)
+        public ScrollingBackground(BitmapImage background, double velocity)
         {
             Velocity = velocity;
-
-            Background1 = new Image();
-            Background1.Source = background.Source;
-
-            Background2 = new Image();
-            Background2.Source = background.Source;
+            Image = background;
 
             Width = background.Width;
             Height = background.Height;
+
+            BGRect1 = new Rect(0.0, 0.0, Width, Height);
+            BGRect2 = new Rect(Height, 0.0, Width, Height);
         }
 
         public void Update(double dt)
@@ -36,15 +38,9 @@ namespace Space
 
             if (Offset >= Height)
                 Offset = 0.0;
-        }
 
-        public void Draw(Canvas scene)
-        {
-            Canvas.SetTop(Background1, Offset - Height + 1);
-            Canvas.SetTop(Background2, Offset);
-
-            scene.Children.Add(Background1);
-            scene.Children.Add(Background2);
+            BGRect1 = new Rect(0.0, Offset - Height + 1, Width, Height);
+            BGRect2 = new Rect(0.0, Offset, Width, Height);
         }
     }
 }
