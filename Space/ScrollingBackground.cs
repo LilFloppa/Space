@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -15,7 +16,7 @@ namespace Space
         public Rect BGRect1 { get; set; }
         public Rect BGRect2 { get; set; }
 
-        public BitmapImage Image { get; set; }
+        public ImageSource Image { get; set; }
 
         public double Width { get; private set; }
         public double Height { get; private set; }

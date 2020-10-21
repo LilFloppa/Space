@@ -7,7 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Closing="Window_Closing">
     <Grid>
-
-        <Canvas x:Name="Scene" ClipToBounds="True"></Canvas>
+        <Image x:Name="Canvas" Stretch="Fill" Source="{Binding CanvasSource, Mode=OneWay}"></Image>
     </Grid>
 </Window>
