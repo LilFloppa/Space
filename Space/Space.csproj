@@ -7,13 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\White.png" />
+    <None Remove="Background.jpg" />
+    <None Remove="S.png" />
     <None Remove="SeamlessBackground.jpg" />
-    <None Remove="SeamlessBackground.png" />
+    <None Remove="Ship.png" />
     <None Remove="Вариант.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="SeamlessBackground.png" />
+    <Resource Include="Assets\Background.jpg" />
+    <Resource Include="Assets\Ship.png" />
+    <Resource Include="Assets\White.png" />
   </ItemGroup>
 
 </Project>

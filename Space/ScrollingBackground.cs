@@ -8,40 +8,40 @@ using System.Windows.Threading;
 
 namespace Space
 {
-    class ScrollingBackground
-    {
-        public double Velocity { get; private set; } = 0.0;
-        public double Offset { get; private set; } = 0.0;
+	class ScrollingBackground
+	{
+		public double Velocity { get; private set; } = 0.0;
+		public double Offset { get; private set; } = 0.0;
 
-        public Rect BGRect1 { get; set; }
-        public Rect BGRect2 { get; set; }
+		public Rect BGRect1 { get; private set; }
+		public Rect BGRect2 { get; private set; }
 
-        public ImageSource Image { get; set; }
+		public ImageSource Image { get; set; }
 
-        public double Width { get; private set; }
-        public double Height { get; private set; }
-        
-        public ScrollingBackground(BitmapImage background, double velocity)
-        {
-            Velocity = velocity;
-            Image = background;
+		public double ImageWidth { get; private set; }
+		public double ImageHeight { get; private set; }
 
-            Width = background.Width;
-            Height = background.Height;
+		public ScrollingBackground(ImageSource image, double velocity)
+		{
+			Velocity = velocity;
+			Image = image;
 
-            BGRect1 = new Rect(0.0, 0.0, Width, Height);
-            BGRect2 = new Rect(Height, 0.0, Width, Height);
-        }
+			ImageWidth = image.Width;
+			ImageHeight = image.Height;
 
-        public void Update(double dt)
-        {
-            Offset += Velocity * dt;
+			BGRect1 = new Rect(0.0, 0.0, ImageWidth, ImageHeight);
+			BGRect2 = new Rect(ImageHeight, 0.0, ImageWidth, ImageHeight);
+		}
 
-            if (Offset >= Height)
-                Offset = 0.0;
+		public void Update(double dt)
+		{
+			Offset += Velocity * dt;
 
-            BGRect1 = new Rect(0.0, Offset - Height + 1, Width, Height);
-            BGRect2 = new Rect(0.0, Offset, Width, Height);
-        }
-    }
+			if (Offset >= ImageHeight)
+				Offset = 0.0;
+
+			BGRect1 = new Rect(0.0, Offset - ImageHeight + 1, ImageWidth, ImageHeight);
+			BGRect2 = new Rect(0.0, Offset, ImageWidth, ImageHeight);
+		}
+	}
 }
