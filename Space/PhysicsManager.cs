@@ -24,11 +24,11 @@ namespace Space
 
 		public List<Collision> Collisions { get; set; } = new List<Collision>();
 
-		public void CreateBoxComponent(Size size, Point relativePosition, IActor owner)
+		public void CreateBoxComponent(Size size, IActor owner)
 		{
 			Rect boundingRect = new Rect(
-				owner.Center.X - size.Width / 2.0 + relativePosition.X,
-				owner.Center.Y - size.Height / 2.0 + relativePosition.Y,
+				owner.TC.Position.X - size.Width / 2.0,
+				owner.TC.Position.Y - size.Height / 2.0,
 				size.Width,
 				size.Height);
 

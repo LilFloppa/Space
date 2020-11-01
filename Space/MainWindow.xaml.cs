@@ -48,7 +48,7 @@ namespace Space
 
 			Ship player = new Ship(this, 400.0, new DrawComponent(playerTexture, new Size(64, 64)), new TransformComponent(new Point(100, 100)));
 
-			PM.CreateBoxComponent(new Size(100.0, 100.0), new Point(0.0, 0.0), player);
+			PM.CreateBoxComponent(new Size(20.0, 20.0), player);
 
 			actors.Add(player);
 
@@ -87,8 +87,8 @@ namespace Space
 			// Draw Actors
 			foreach (var actor in actors)
 			{
-				group.Children.Add(new GeometryDrawing(new ImageBrush(white), null, new RectangleGeometry(actor.BC.BoundingRect)));
-				group.Children.Add(new GeometryDrawing(new ImageBrush(actor.DC.Texture), null, new RectangleGeometry(actor.BoundingRect)));
+				Rect textureRect = new Rect(new Point(actor.Center.X - actor.DC.TexSize.Width / 2.0, actor.Center.Y - actor.DC.TexSize.Height / 2.0), actor.DC.TexSize);
+				group.Children.Add(new GeometryDrawing(new ImageBrush(actor.DC.Texture), null, new RectangleGeometry(textureRect)));
 			}
 
 			group.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, Width, Height));

@@ -55,6 +55,10 @@ namespace Space
 		{
 			BoundingRect = new Rect(BoundingRect.X + offset.X, BoundingRect.Y + offset.Y, BoundingRect.Width, BoundingRect.Height);
 		}
-	}
 
+		public void SetPosition(Point position)
+		{
+			BoundingRect = new Rect(position, BoundingRect.Size);
+		}
+	}
 }

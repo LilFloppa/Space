@@ -33,8 +33,8 @@ namespace Space
 		public MainWindow Window { get; set; }
 
 		public DrawComponent DC { get; set; } = null;
-		public TransformComponent TC { get; set; } = null;
 		public BoxComponent BC { get; set; } = null;
+		public TransformComponent TC { get; set; } = null;
 
 		public ShipController Controller { get; set; }
 
@@ -55,30 +55,27 @@ namespace Space
 		{
 			// Update Position
 			Controller.Update(dt);
-			Point Transform = new Point(Controller.Direction.X * Velocity * dt, Controller.Direction.Y * Velocity * dt);
+			Point Offset = new Point(Controller.Direction.X * Velocity * dt, Controller.Direction.Y * Velocity * dt);
 
-			TC.AddOffset(Transform);
-			BC.AddOffset(Transform);
+			TC.AddOffset(Offset);
+			BC.AddOffset(Offset);
 
 			if (BC.BoundingRect.Top < 0.0)
-				TC.SetPosition(new Point(BC.BoundingRect.X, 0.0));
+				BC.SetPosition(new Point(BC.BoundingRect.X, 0.0));
 
 			if (BC.BoundingRect.Bottom > Window.Height)
-				TC.SetPosition(new Point(BC.BoundingRect.X, Window.Height - BC.BoundingRect.Height));
+				BC.SetPosition(new Point(BC.BoundingRect.X, Window.Height - BC.BoundingRect.Height));
 
 			if (BC.BoundingRect.Left < 0.0)
-				TC.SetPosition(new Point(0.0, BC.BoundingRect.Y));
+				BC.SetPosition(new Point(0.0, BC.BoundingRect.Y));
 
 			if (BC.BoundingRect.Right > Window.Width)
-				TC.SetPosition(new Point(Window.Width - BC.BoundingRect.Width, BC.BoundingRect.Y));
+				BC.SetPosition(new Point(Window.Width - BC.BoundingRect.Width, BC.BoundingRect.Y));
 
-			BC.BoundingRect = new Rect(new Point(TC.Position.X - BC.BoundingRect.Size.Width / 2.0, TC.Position.Y - BC.BoundingRect.Size.Height / 2.0), BC.BoundingRect.Size);
+			TC.SetPosition(new Point(BC.BoundingRect.X + BC.BoundingRect.Width / 2.0, BC.BoundingRect.Y + BC.BoundingRect.Height / 2.0));
 		}
 
-		// TODO: Remove (TransformComponent must contain center position)
-		public Point Center => new Point(TC.Position.X + DC.TexSize.Width / 2, TC.Position.Y + DC.TexSize.Height / 2);
-
-		// TODO: Must be  TextureBoundingRect
-		public Rect BoundingRect => new Rect(TC.Position, DC.TexSize);
+		public Point Center => TC.Position;
+		public Rect BoundingRect => BC.BoundingRect;
 	}
 }
