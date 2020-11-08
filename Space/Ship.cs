@@ -30,7 +30,7 @@ namespace Space
 
 	class Ship : IActor
 	{
-		public MainWindow Window { get; set; }
+		public Scene Scene { get; set; }
 
 		public DrawComponent DC { get; set; } = null;
 		public BoxComponent BC { get; set; } = null;
@@ -40,9 +40,10 @@ namespace Space
 
 		public double Velocity { get; set; } = 0.0;
 
-		public Ship(MainWindow window, double velocity, DrawComponent dc, TransformComponent tc)
+		public Ship(Scene scene, double velocity, DrawComponent dc, TransformComponent tc)
 		{
-			Window = window;
+			Scene = scene;
+
 			Velocity = velocity;
 
 			DC = dc;
@@ -63,14 +64,14 @@ namespace Space
 			if (BC.BoundingRect.Top < 0.0)
 				BC.SetPosition(new Point(BC.BoundingRect.X, 0.0));
 
-			if (BC.BoundingRect.Bottom > Window.Height)
-				BC.SetPosition(new Point(BC.BoundingRect.X, Window.Height - BC.BoundingRect.Height));
+			if (BC.BoundingRect.Bottom > Scene.Game.Window.Height)
+				BC.SetPosition(new Point(BC.BoundingRect.X, Scene.Game.Window.Height - BC.BoundingRect.Height));
 
 			if (BC.BoundingRect.Left < 0.0)
 				BC.SetPosition(new Point(0.0, BC.BoundingRect.Y));
 
-			if (BC.BoundingRect.Right > Window.Width)
-				BC.SetPosition(new Point(Window.Width - BC.BoundingRect.Width, BC.BoundingRect.Y));
+			if (BC.BoundingRect.Right > Scene.Game.Window.Width)
+				BC.SetPosition(new Point(Scene.Game.Window.Width - BC.BoundingRect.Width, BC.BoundingRect.Y));
 
 			TC.SetPosition(new Point(BC.BoundingRect.X + BC.BoundingRect.Width / 2.0, BC.BoundingRect.Y + BC.BoundingRect.Height / 2.0));
 		}

@@ -1,12 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
+﻿using System.Windows;
 
 namespace Space
 {
@@ -16,7 +8,7 @@ namespace Space
 		public TransformComponent TC { get; set; }
 		public BoxComponent BC { get; set; }
 		
-		public MainWindow Window { get; set; }
+		public Scene Scene { get; set; }
 
 		public Point Center { get; }
 		public Rect BoundingRect { get; }

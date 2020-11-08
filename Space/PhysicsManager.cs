@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Windows;
 
 namespace Space
 {
 	class Collision
 	{
-		IActor Player { get; set; }
-		IActor Actor { get; set; }
+		IActor Actor1 { get; set; }
+		IActor Actor2 { get; set; }
 
-		public Collision(IActor player, IActor actor)
+		public Collision(IActor actor1, IActor actor2)
 		{
-			Player = player;
-			Actor = actor;
+			Actor1 = actor1;
+			Actor2 = actor2;
 		}
 	}
 

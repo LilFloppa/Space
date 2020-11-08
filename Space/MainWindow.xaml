@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Space"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" Closing="Window_Closing">
-    <Grid>
+        Title="MainWindow" Height="450" Width="800">
+    <Grid x:Name="Grid">
         <Image x:Name="Canvas" Stretch="Fill" Source="{Binding CanvasSource, Mode=OneWay}"></Image>
     </Grid>
 </Window>
