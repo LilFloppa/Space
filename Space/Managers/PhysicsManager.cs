@@ -5,8 +5,8 @@ namespace Space
 {
 	class Collision
 	{
-		IActor Actor1 { get; set; }
-		IActor Actor2 { get; set; }
+		public IActor Actor1 { get; set; }
+		public IActor Actor2 { get; set; }
 
 		public Collision(IActor actor1, IActor actor2)
 		{
@@ -18,8 +18,6 @@ namespace Space
 	class PhysicsManager
 	{
 		public List<BoxComponent> BoxComponents { get; private set; } = new List<BoxComponent>();
-		public BoxComponent PlayerBoxComponent { get; private set; } = null;
-
 		public List<Collision> Collisions { get; set; } = new List<Collision>();
 
 		public void CreateBoxComponent(Size size, IActor owner)
@@ -31,26 +29,23 @@ namespace Space
 				size.Height);
 
 			BoxComponent bc = new BoxComponent(boundingRect, owner);
-
-			if (owner is Ship)
-				PlayerBoxComponent = bc;
-			else
-				BoxComponents.Add(bc);
-
+			BoxComponents.Add(bc);
 			owner.BC = bc;
 		}
 
 		public void CheckCollisions()
 		{
-			foreach (var bc in BoxComponents)
-			{
-				if (bc.BoundingRect.IntersectsWith(PlayerBoxComponent.BoundingRect))
-				{
-					// TODO: Check Collisions
-				}
-			}
+			Collisions.Clear();
 
-			// TODO: Check Player and Walls collisions
+			for (int i = 0; i < BoxComponents.Count; i++)
+				for (int j = i + 1; j < BoxComponents.Count; j++)
+				{
+					BoxComponent bc1 = BoxComponents[i];
+					BoxComponent bc2 = BoxComponents[j];
+
+					if (bc1.BoundingRect.IntersectsWith(bc2.BoundingRect))
+						Collisions.Add(new Collision(bc1.Owner, bc2.Owner));
+				}
 		}
 	}
 }

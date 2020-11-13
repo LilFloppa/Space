@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Space.Actors;
+using System.Windows;
 
 namespace Space
 {
@@ -21,6 +22,7 @@ namespace Space
 
 		public PhysicsManager PM { get; set; } = new PhysicsManager();
 		public AssetManager AM { get; set; } = new AssetManager();
+		public CollisionResolveManager CRM { get; set; } = new CollisionResolveManager();
 
 		public Game(MainWindow window)
 		{
@@ -31,6 +33,11 @@ namespace Space
 		public void Update(double dt)
 		{
 			SBG.Update(dt);
+			PM.CheckCollisions();
+
+			foreach (var collision in PM.Collisions)
+				CRM.ResolveCollision(collision);
+
 			Scene.Update(dt);
 		}
 
@@ -40,6 +47,15 @@ namespace Space
 			Ship player = new Ship(Scene, 400.0, new DrawComponent(AM.GetTexture("Assets/Ship.png"), new Size(64.0, 64.0)), new TransformComponent(new Point(100.0, 100.0)));
 			Scene.Actors.Add(player);
 			PM.CreateBoxComponent(new Size(64.0, 64.0), player);
+
+			Asteroid asteroid = new Asteroid(
+				Scene,
+				new Point(0.0, 1.0), 20.0, 
+				new DrawComponent(AM.GetTexture("Assets/Ship.png"), new Size(100.0, 100.0)),
+				new TransformComponent(new Point(Window.Width / 2.0, 50.0)));
+
+			Scene.Actors.Add(asteroid);
+			PM.CreateBoxComponent(new Size(100.0, 100.0), asteroid);
 
 			State = GameState.InProgress;
 		}

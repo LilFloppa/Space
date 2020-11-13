@@ -6,7 +6,7 @@ namespace Space
 	class ShipController : IActorController
 	{
 		public IActor Owner { get; set; } = null;
-		public Point Direction { get; private set; } = new Point(0.0, 0.0);
+		public Point Direction { get; set; } = new Point(0.0, 0.0);
 
 		public ShipController(Ship owner) => Owner = owner;
  
@@ -30,15 +30,16 @@ namespace Space
 
 	class Ship : IActor
 	{
-		public Scene Scene { get; set; }
+		public Scene Scene { get; set; } = null;
 
 		public DrawComponent DC { get; set; } = null;
 		public BoxComponent BC { get; set; } = null;
 		public TransformComponent TC { get; set; } = null;
 
-		public ShipController Controller { get; set; }
+		public ShipController Controller { get; set; } = null;
 
 		public double Velocity { get; set; } = 0.0;
+		public bool MustBeDestroyed { get; set; } = false;
 
 		public Ship(Scene scene, double velocity, DrawComponent dc, TransformComponent tc)
 		{
@@ -58,7 +59,6 @@ namespace Space
 			Controller.Update(dt);
 			Point Offset = new Point(Controller.Direction.X * Velocity * dt, Controller.Direction.Y * Velocity * dt);
 
-			TC.AddOffset(Offset);
 			BC.AddOffset(Offset);
 
 			if (BC.BoundingRect.Top < 0.0)
