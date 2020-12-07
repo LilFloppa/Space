@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Space.Actors;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Space
@@ -10,7 +11,7 @@ namespace Space
 
 		public ShipController(Ship owner) => Owner = owner;
  
-		public void Update(double dt)
+		public void OnUpdate(double dt)
 		{
 			Direction = new Point(0.0, 0.0);
 
@@ -28,6 +29,16 @@ namespace Space
 		}
 	}
 
+	struct ShipSpecs
+	{
+		public int Level;
+		public double Velocity;
+		public double HP;
+		public double Damage;
+		public double MaxHP;
+		public double Cooldown;
+	}
+
 	class Ship : IActor
 	{
 		public Scene Scene { get; set; } = null;
@@ -38,25 +49,34 @@ namespace Space
 
 		public ShipController Controller { get; set; } = null;
 
-		public double Velocity { get; set; } = 0.0;
-		public bool MustBeDestroyed { get; set; } = false;
+		public int Level { get; set; }
+		public double Velocity { get; set; }
+		public double HP { get; set; }
+		public double Damage { get; set; }
+		public double MaxHP { get; set; }
+		public double Cooldown { get; set; }
 
-		public Ship(Scene scene, double velocity, DrawComponent dc, TransformComponent tc)
+		public Ship(Scene scene, DrawComponent dc, TransformComponent tc, ShipSpecs specs)
 		{
 			Scene = scene;
-
-			Velocity = velocity;
 
 			DC = dc;
 			TC = tc;
 
 			Controller = new ShipController(this);
+
+			Level = specs.Level;
+			Velocity = specs.Velocity;
+			HP = specs.HP;
+			Damage = specs.Damage;
+			MaxHP = specs.MaxHP;
+			Cooldown = specs.Cooldown;
 		}
 
-		public void Update(double dt)
+		public void OnUpdate(double dt)
 		{
 			// Update Position
-			Controller.Update(dt);
+			Controller.OnUpdate(dt);
 			Point Offset = new Point(Controller.Direction.X * Velocity * dt, Controller.Direction.Y * Velocity * dt);
 
 			BC.AddOffset(Offset);
@@ -74,9 +94,33 @@ namespace Space
 				BC.SetPosition(new Point(Scene.Game.Window.Width - BC.BoundingRect.Width, BC.BoundingRect.Y));
 
 			TC.SetPosition(new Point(BC.BoundingRect.X + BC.BoundingRect.Width / 2.0, BC.BoundingRect.Y + BC.BoundingRect.Height / 2.0));
+
+			Attack(dt);
+		}
+
+		public void OnDestroy() { }
+
+		void Attack(double dt)
+		{
+			if (Cooldown <= 0.0)
+			{
+				LaserSpecs specs = new LaserSpecs();
+				specs.Direction = new Point(0.0, -1.0);
+				specs.LifeSpan = 2.0;
+				specs.Velocity = 500.0;
+				Laser laser = new Laser(Scene, new TransformComponent(TC.Position), specs);
+				Scene.NewActors.Add(laser);
+				Cooldown = 0.2;
+			}
+			else
+			{
+				Cooldown -= dt;
+			}			
 		}
 
 		public Point Center => TC.Position;
 		public Rect BoundingRect => BC.BoundingRect;
+		public double RotationAngle { get => 0.0; set => throw new System.NotImplementedException(); }
+		public bool MustBeDestroyed { get; set; } = false;
 	}
 }

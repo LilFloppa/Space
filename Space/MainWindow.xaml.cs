@@ -32,7 +32,8 @@ namespace Space
 
 			game = new Game(this);
 
-			white = game.AM.GetTexture("Assets/White.png");
+			game.AM.LoadTextures();
+			white = game.AM.GetTexture("White.png");
 
 			menu.OnStartGameClicked += OnStartGameClicked;
 
@@ -67,7 +68,6 @@ namespace Space
 
 		private void Draw()
 		{
-
 			DrawingGroup group = new DrawingGroup();
 
 			// Draw background
@@ -78,8 +78,12 @@ namespace Space
 			foreach (var actor in game.Scene.Actors)
 			{
 				Rect textureRect = new Rect(new Point(actor.Center.X - actor.DC.TexSize.Width / 2.0, actor.Center.Y - actor.DC.TexSize.Height / 2.0), actor.DC.TexSize);
-				//group.Children.Add(new GeometryDrawing(new ImageBrush(white), null, new RectangleGeometry(actor.BoundingRect)));
-				group.Children.Add(new GeometryDrawing(new ImageBrush(actor.DC.Texture), null, new RectangleGeometry(textureRect)));
+				group.Children.Add(new GeometryDrawing(new ImageBrush(white), null, new RectangleGeometry(actor.BoundingRect)));
+
+				ImageBrush brush = new ImageBrush(actor.DC.Texture);
+				brush.Transform = new RotateTransform(actor.RotationAngle, actor.Center.X, actor.Center.Y);
+				GeometryDrawing gd = new GeometryDrawing(brush, null, new EllipseGeometry(textureRect));		
+				group.Children.Add(gd);
 
 			}
 

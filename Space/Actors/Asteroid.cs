@@ -1,15 +1,14 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace Space.Actors
 {
-	class AsteroidController : IActorController
+	struct AsteroidSpecs
 	{
-		public IActor Owner { get; set; }
-		public Point Direction { get; set; }
-
-		public AsteroidController(IActor owner) => Owner = owner;
-
-		public void Update(double dt) { }
+		public Point Direction;
+		public double Velocity;
+		public double RotationVelocity;
+		public double HP;
 	}
 
 	class Asteroid : IActor
@@ -20,32 +19,27 @@ namespace Space.Actors
 		public TransformComponent TC { get; set; } = null;
 		public BoxComponent BC { get; set; } = null;
 
-		public AsteroidController Controller { get; set; } = null;
+		public Point Direction { get; set; }
+		public double Velocity { get; set; }
+		public double RotationVelocity { get; set; }
+		public double HP { get; set; }
 
-		public double Velocity { get; set; } = 0.0;
-		public int HP { get; set; } = 100;
-
-		public bool MustBeDestroyed { get; set; } = false;
-		public double InvulnerabilityTime { get; set; } = 0.0;
-
-		public Asteroid(Scene scene, Point direction, double velocity, DrawComponent dc, TransformComponent tc)
+		public Asteroid(Scene scene, DrawComponent dc, TransformComponent tc, AsteroidSpecs specs)
 		{
 			Scene = scene;
 
-			Controller = new AsteroidController(this);
-			Controller.Direction = direction;
-			Velocity = velocity;
-
 			DC = dc;
 			TC = tc;
+
+			Direction = specs.Direction;
+			Velocity = specs.Velocity;
+			RotationVelocity = specs.RotationVelocity;
+			HP = specs.HP;
 		}
 
-		public void Update(double dt)
+		public void OnUpdate(double dt)
 		{
 			UpdateTransform(dt);
-
-			if (InvulnerabilityTime > 0)
-				InvulnerabilityTime -= dt;
 
 			if (BC.BoundingRect.Top > Scene.Game.Window.Height + 100)
 				MustBeDestroyed = true;
@@ -56,23 +50,23 @@ namespace Space.Actors
 
 		void UpdateTransform(double dt)
 		{
-			Controller.Update(dt);
-			Point Offset = new Point(Controller.Direction.X * Velocity * dt, Controller.Direction.Y * Velocity * dt);
+			Point Offset = new Point(Direction.X * Velocity * dt, Direction.Y * Velocity * dt);
 			BC.AddOffset(Offset);
 			TC.AddOffset(Offset);
+
+			RotationAngle += RotationVelocity * dt;
 		}
 
-		public void GetDamage(int damage)
+		public void GetDamage(int damage) => HP -= damage;
+
+		public void OnDestroy()
 		{
-			if (InvulnerabilityTime <= 0)
-			{
-				HP -= damage;
-				InvulnerabilityTime = 1.0;
-				DC.TexSize = new Size(DC.TexSize.Width / 1.1, DC.TexSize.Height / 1.1);
-			}
+			Console.WriteLine("ASTEROID DESTROYED!");
 		}
 
 		public Point Center => TC.Position;
 		public Rect BoundingRect => BC.BoundingRect;
+		public double RotationAngle { get; set; }
+		public bool MustBeDestroyed { get; set; } = false;
 	}
 }

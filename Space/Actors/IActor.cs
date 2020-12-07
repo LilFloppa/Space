@@ -12,16 +12,18 @@ namespace Space
 
 		public Point Center { get; }
 		public Rect BoundingRect { get; }
+		public double RotationAngle { get; set; }
 
 		public bool MustBeDestroyed { get; set; }
 
-		public void Update(double dt);
+		public void OnUpdate(double dt);
+		public void OnDestroy();
 	}
 
 	interface IActorController
 	{
 		public IActor Owner { get; set; }
 		public Point Direction { get; set; }
-		public void Update(double dt);
+		public void OnUpdate(double dt);
 	}
 }
