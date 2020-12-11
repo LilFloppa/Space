@@ -1,4 +1,5 @@
 ﻿using Space.Actors;
+using System;
 using System.Windows;
 using System.Windows.Input;
 
@@ -32,10 +33,10 @@ namespace Space
 	struct ShipSpecs
 	{
 		public int Level;
+		public int HP;
+		public int Damage;
+		public int MaxHP;
 		public double Velocity;
-		public double HP;
-		public double Damage;
-		public double MaxHP;
 		public double Cooldown;
 	}
 
@@ -46,14 +47,15 @@ namespace Space
 		public DrawComponent DC { get; set; } = null;
 		public BoxComponent BC { get; set; } = null;
 		public TransformComponent TC { get; set; } = null;
+		public TextComponent Text { get; set; }
 
 		public ShipController Controller { get; set; } = null;
 
 		public int Level { get; set; }
+		public int HP { get; set; }
+		public int Damage { get; set; }
+		public int MaxHP { get; set; }
 		public double Velocity { get; set; }
-		public double HP { get; set; }
-		public double Damage { get; set; }
-		public double MaxHP { get; set; }
 		public double Cooldown { get; set; }
 
 		public Ship(Scene scene, DrawComponent dc, TransformComponent tc, ShipSpecs specs)
@@ -62,6 +64,7 @@ namespace Space
 
 			DC = dc;
 			TC = tc;
+			Text = new TextComponent(HP.ToString());
 
 			Controller = new ShipController(this);
 
@@ -75,7 +78,13 @@ namespace Space
 
 		public void OnUpdate(double dt)
 		{
-			// Update Position
+			UpdateTransform(dt);
+			Attack(dt);
+			Text.Text = HP.ToString();
+		}
+
+		void UpdateTransform(double dt)
+		{
 			Controller.OnUpdate(dt);
 			Point Offset = new Point(Controller.Direction.X * Velocity * dt, Controller.Direction.Y * Velocity * dt);
 
@@ -94,8 +103,6 @@ namespace Space
 				BC.SetPosition(new Point(Scene.Game.Window.Width - BC.BoundingRect.Width, BC.BoundingRect.Y));
 
 			TC.SetPosition(new Point(BC.BoundingRect.X + BC.BoundingRect.Width / 2.0, BC.BoundingRect.Y + BC.BoundingRect.Height / 2.0));
-
-			Attack(dt);
 		}
 
 		public void OnDestroy() { }
@@ -106,11 +113,16 @@ namespace Space
 			{
 				LaserSpecs specs = new LaserSpecs();
 				specs.Direction = new Point(0.0, -1.0);
+				specs.Damage = Damage;
 				specs.LifeSpan = 2.0;
 				specs.Velocity = 500.0;
-				Laser laser = new Laser(Scene, new TransformComponent(TC.Position), specs);
-				Scene.NewActors.Add(laser);
-				Cooldown = 0.2;
+				Laser laser1 = new Laser(Scene, new TransformComponent(TC.Position.X - 18, TC.Position.Y), specs);
+				Laser laser2 = new Laser(Scene, new TransformComponent(TC.Position), specs);
+				Laser laser3 = new Laser(Scene, new TransformComponent(TC.Position.X + 18, TC.Position.Y), specs);
+				Scene.NewActors.Add(laser1);
+				Scene.NewActors.Add(laser2);
+				Scene.NewActors.Add(laser3);
+				Cooldown = 0.05;
 			}
 			else
 			{

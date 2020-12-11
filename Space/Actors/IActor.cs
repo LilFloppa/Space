@@ -7,6 +7,7 @@ namespace Space
 		public DrawComponent DC { get; set; }
 		public TransformComponent TC { get; set; }
 		public BoxComponent BC { get; set; }
+		public TextComponent Text { get; set; }
 		
 		public Scene Scene { get; set; }
 

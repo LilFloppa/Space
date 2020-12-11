@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -66,6 +67,35 @@ namespace Space
 			}
 		}
 
+		private GeometryDrawing DrawText(string text, Point origin, double angle)
+		{
+			Typeface typeface = new Typeface(new FontFamily("Miramonte Bold"), FontStyles.Normal, FontWeights.UltraBold, FontStretches.Normal);
+			FormattedText formattedText = new FormattedText(
+				text, 
+				CultureInfo.GetCultureInfo("en-us"),
+				FlowDirection.LeftToRight, 
+				typeface,
+				27, Brushes.Black,
+				VisualTreeHelper.GetDpi(this).PixelsPerDip);
+
+			Geometry geometry = formattedText.BuildGeometry(origin);
+			TransformGroup tc = new TransformGroup();
+			Rect newRect = new Rect(origin.X - geometry.Bounds.Width / 2.0, origin.Y - geometry.Bounds.Height / 2.0, geometry.Bounds.Width, geometry.Bounds.Height);
+
+			tc.Children.Add(new TranslateTransform(-(geometry.Bounds.X - newRect.X), -(geometry.Bounds.Y - newRect.Y)));
+			tc.Children.Add(new RotateTransform(angle, origin.X, origin.Y));
+			geometry.Transform = tc;
+
+			return new GeometryDrawing(Brushes.White, new Pen(Brushes.Black, 1.0), geometry);
+		}
+
+		private GeometryDrawing DrawTexture(Rect rect, ImageSource texture, Point origin, double angle)
+		{
+			ImageBrush brush = new ImageBrush(texture);
+			brush.Transform = new RotateTransform(angle, origin.X, origin.Y);
+			return new GeometryDrawing(brush, null, new EllipseGeometry(rect));
+		}
+
 		private void Draw()
 		{
 			DrawingGroup group = new DrawingGroup();
@@ -77,14 +107,16 @@ namespace Space
 			// Draw Actors
 			foreach (var actor in game.Scene.Actors)
 			{
+				// Draw Texture
 				Rect textureRect = new Rect(new Point(actor.Center.X - actor.DC.TexSize.Width / 2.0, actor.Center.Y - actor.DC.TexSize.Height / 2.0), actor.DC.TexSize);
-				group.Children.Add(new GeometryDrawing(new ImageBrush(white), null, new RectangleGeometry(actor.BoundingRect)));
+				//group.Children.Add(new GeometryDrawing(new ImageBrush(white), null, new RectangleGeometry(actor.BoundingRect)));
+				group.Children.Add(DrawTexture(textureRect, actor.DC.Texture, actor.Center, actor.RotationAngle));
 
-				ImageBrush brush = new ImageBrush(actor.DC.Texture);
-				brush.Transform = new RotateTransform(actor.RotationAngle, actor.Center.X, actor.Center.Y);
-				GeometryDrawing gd = new GeometryDrawing(brush, null, new EllipseGeometry(textureRect));		
-				group.Children.Add(gd);
-
+				// Draw Text
+				if (actor.Text != null)
+				{
+					group.Children.Add(DrawText(actor.Text.Text, actor.Center, actor.RotationAngle));
+				}
 			}
 
 			group.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, Width, Height));

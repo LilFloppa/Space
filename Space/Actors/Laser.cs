@@ -6,18 +6,22 @@ namespace Space.Actors
 	{
 		public Point Direction;
 		public double Velocity;
+		public int Damage;
 		public double LifeSpan;
 	}
 
 	class Laser : IActor
 	{
+		public Scene Scene { get; set; }
+
 		public DrawComponent DC { get; set; }
 		public TransformComponent TC { get; set; }
 		public BoxComponent BC { get; set; }
-		public Scene Scene { get; set; }
+		public TextComponent Text { get => null; set => throw new System.NotImplementedException(); }
 
 		public Point Direction { get; set; }
 		public double Velocity { get; set; }
+		public int Damage { get; set; }
 		public double LifeSpan { get; set; }
 
 		public Laser(Scene scene, TransformComponent tc, LaserSpecs specs)
@@ -30,6 +34,7 @@ namespace Space.Actors
 
 			Direction = specs.Direction;
 			Velocity = specs.Velocity;
+			Damage = specs.Damage;
 			LifeSpan = specs.LifeSpan;
 		}
 
@@ -37,6 +42,7 @@ namespace Space.Actors
 		{
 			Point Offset = new Point(Direction.X * Velocity * dt, Direction.Y * Velocity * dt);
 			TC.AddOffset(Offset);
+			BC.AddOffset(Offset);
 
 			LifeSpan -= dt;
 
@@ -44,7 +50,7 @@ namespace Space.Actors
 				MustBeDestroyed = true;
 		}
 
-		public void OnDestroy() { }
+		public void OnDestroy() => Scene.Game.PM.DeleteBoxComponent(BC);
 
 		public Point Center => TC.Position;
 		public Rect BoundingRect => BC.BoundingRect;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media;
 
 namespace Space
@@ -24,20 +23,12 @@ namespace Space
 	{
 		public Point Position { get; set; }
 
-		public TransformComponent(Point position)
-		{
-			Position = position;
-		}
+		public TransformComponent(double x, double y) => Position = new Point(x, y);
+		public TransformComponent(Point position) => Position = position;
 
-		public void SetPosition(Point position)
-		{
-			Position = position;
-		}
+		public void SetPosition(Point position) => Position = position;
 
-		public void AddOffset(Point offset)
-		{
-			Position = new Point(Position.X + offset.X, Position.Y + offset.Y);
-		}
+		public void AddOffset(Point offset) => Position = new Point(Position.X + offset.X, Position.Y + offset.Y);
 	}
 
 	class BoxComponent : IComponent
@@ -51,14 +42,15 @@ namespace Space
 			Owner = owner;
 		}
 
-		public void AddOffset(Point offset)
-		{
-			BoundingRect = new Rect(BoundingRect.X + offset.X, BoundingRect.Y + offset.Y, BoundingRect.Width, BoundingRect.Height);
-		}
+		public void AddOffset(Point offset) => BoundingRect = new Rect(BoundingRect.X + offset.X, BoundingRect.Y + offset.Y, BoundingRect.Width, BoundingRect.Height);
 
-		public void SetPosition(Point position)
-		{
-			BoundingRect = new Rect(position, BoundingRect.Size);
-		}
+		public void SetPosition(Point position) => BoundingRect = new Rect(position, BoundingRect.Size);
+	}
+
+	class TextComponent : IComponent
+	{
+		public string Text { get; set; }
+
+		public TextComponent(string text) => Text = text;
 	}
 }

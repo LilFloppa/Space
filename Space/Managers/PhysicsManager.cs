@@ -47,5 +47,7 @@ namespace Space
 						Collisions.Add(new Collision(bc1.Owner, bc2.Owner));
 				}
 		}
+
+		public void DeleteBoxComponent(BoxComponent bc) => BoxComponents.Remove(bc);
 	}
 }
