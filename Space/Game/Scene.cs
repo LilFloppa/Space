@@ -33,6 +33,7 @@ namespace Space
 			foreach (IActor actor in ActorsToRemove)
 			{
 				actor.OnDestroy();
+				Game.PM.DeleteBoxComponent(actor.BC);
 				Actors.Remove(actor);
 			}
 

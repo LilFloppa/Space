@@ -11,27 +11,15 @@ namespace Space.Actors
 		public int HP;
 	}
 
-	class Asteroid : IActor
+	class Asteroid : Actor
 	{
-		public Scene Scene { get; set; } = null;
-
-		public DrawComponent DC { get; set; } = null;
-		public TransformComponent TC { get; set; } = null;
-		public BoxComponent BC { get; set; } = null;
-		public TextComponent Text { get; set; }
-
 		public Point Direction { get; set; }
 		public double Velocity { get; set; }
 		public double RotationVelocity { get; set; }
 		public int HP { get; set; }
 
-		public Asteroid(Scene scene, DrawComponent dc, TransformComponent tc, AsteroidSpecs specs)
+		public Asteroid(Scene scene, DrawComponent dc, TransformComponent tc, AsteroidSpecs specs) : base(scene, tc, dc)
 		{
-			Scene = scene;
-
-			DC = dc;
-			TC = tc;
-
 			Text = new TextComponent(HP.ToString());
 
 			Direction = specs.Direction;
@@ -40,10 +28,13 @@ namespace Space.Actors
 			HP = specs.HP;
 		}
 
-		public void OnUpdate(double dt)
+		public override void OnUpdate(double dt)
 		{
 			UpdateTransform(dt);
 			Text.Text = HP.ToString();
+
+			if (Center.Y > Scene.Game.Window.Height + 100)
+				MustBeDestroyed = true;
 		}
 
 		void UpdateTransform(double dt)
@@ -62,15 +53,10 @@ namespace Space.Actors
 				MustBeDestroyed = true;
 		}
 
-		public void OnDestroy()
+		public override void OnDestroy()
 		{
 			Console.WriteLine("ASTEROID DESTROYED!");
-			Scene.Game.PM.DeleteBoxComponent(BC);
+			Scene.Game.AsteroidCount--;
 		}
-
-		public Point Center => TC.Position;
-		public Rect BoundingRect => BC.BoundingRect;
-		public double RotationAngle { get; set; }
-		public bool MustBeDestroyed { get; set; } = false;
 	}
 }

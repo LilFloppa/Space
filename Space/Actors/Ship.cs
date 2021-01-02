@@ -40,15 +40,8 @@ namespace Space
 		public double Cooldown;
 	}
 
-	class Ship : IActor
+	class Ship : Actor
 	{
-		public Scene Scene { get; set; } = null;
-
-		public DrawComponent DC { get; set; } = null;
-		public BoxComponent BC { get; set; } = null;
-		public TransformComponent TC { get; set; } = null;
-		public TextComponent Text { get; set; }
-
 		public ShipController Controller { get; set; } = null;
 
 		public int Level { get; set; }
@@ -58,15 +51,10 @@ namespace Space
 		public double Velocity { get; set; }
 		public double Cooldown { get; set; }
 
-		public Ship(Scene scene, DrawComponent dc, TransformComponent tc, ShipSpecs specs)
+		public Ship(Scene scene, DrawComponent dc, TransformComponent tc, ShipSpecs specs) : base(scene, tc, dc)
 		{
-			Scene = scene;
-
-			DC = dc;
-			TC = tc;
-			Text = new TextComponent(HP.ToString());
-
 			Controller = new ShipController(this);
+			Text = new TextComponent(HP.ToString());
 
 			Level = specs.Level;
 			Velocity = specs.Velocity;
@@ -76,7 +64,7 @@ namespace Space
 			Cooldown = specs.Cooldown;
 		}
 
-		public void OnUpdate(double dt)
+		public override void OnUpdate(double dt)
 		{
 			UpdateTransform(dt);
 			Attack(dt);
@@ -105,8 +93,6 @@ namespace Space
 			TC.SetPosition(new Point(BC.BoundingRect.X + BC.BoundingRect.Width / 2.0, BC.BoundingRect.Y + BC.BoundingRect.Height / 2.0));
 		}
 
-		public void OnDestroy() { }
-
 		void Attack(double dt)
 		{
 			if (Cooldown <= 0.0)
@@ -129,10 +115,5 @@ namespace Space
 				Cooldown -= dt;
 			}			
 		}
-
-		public Point Center => TC.Position;
-		public Rect BoundingRect => BC.BoundingRect;
-		public double RotationAngle { get => 0.0; set => throw new System.NotImplementedException(); }
-		public bool MustBeDestroyed { get; set; } = false;
 	}
 }
