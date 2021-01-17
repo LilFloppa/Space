@@ -5,9 +5,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Space"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Button x:Name="StartGame" Content="Start Game" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center" Width="206" Height="55" BorderThickness="0,0,0,0" Background="#00DDDDDD" Click="StartGameClick"/>
+             d:DesignHeight="900" d:DesignWidth="500"
+             Background="Black">
 
+
+
+
+    <Grid>
+        <Label x:Name="LevelLabel" Content="Level: 0" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Top" Height="55" BorderThickness="0,0,0,0" Foreground="White" Margin="0,43,0,0"></Label>
+        <Label x:Name="TargetLabel"  Content="Target: 0" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Top" Height="55" BorderThickness="0,0,0,0" Foreground="White" Margin="0,98,0,0"></Label>
+        <Button x:Name="StartGame" Content="Start Game" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Top" Width="206" Height="55" BorderThickness="1,1,1,1" BorderBrush="White" Background="Transparent" Foreground="White" Click="StartGameClick" Margin="0,697,0,0"/>
+        <Button x:Name="ExitGame" Content="Exit Game" FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Top" Width="206" Height="55" BorderThickness="1,1,1,1" BorderBrush="White" Background="Transparent" Foreground="White" Click="ExitGameClick" Margin="0,757,0,0"/>
     </Grid>
+
 </UserControl>
