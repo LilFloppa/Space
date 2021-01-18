@@ -26,7 +26,14 @@
     <EmbeddedResource Include="Assets\Background.png" />
     <EmbeddedResource Include="Assets\Laser.png" />
     <EmbeddedResource Include="Assets\Ship.png" />
+    <Resource Include="Assets\MenuShip.png" />
     <EmbeddedResource Include="Assets\White.png" />
+    <EmbeddedResource Include="Assets\AddHP.png" />
+    <EmbeddedResource Include="Assets\AddDamage.png" />
+    <EmbeddedResource Include="Assets\AddLazer.png" />
+    <EmbeddedResource Include="Assets\Bomb.png" />
+    <EmbeddedResource Include="Assets\Shield.png" />
+    <EmbeddedResource Include="Assets\ChainsawShield.png" />
   </ItemGroup>
 
 </Project>

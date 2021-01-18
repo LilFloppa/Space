@@ -34,8 +34,10 @@ namespace Space
    {
       public int Level;
       public int HP;
-      public int Damage;
       public int MaxHP;
+      public int Damage;
+      public int MaxDamage;
+      public int LazerCount;
       public double Velocity;
       public double Cooldown;
    }
@@ -46,8 +48,10 @@ namespace Space
 
       public int Level { get; set; }
       public int HP { get; set; }
-      public int Damage { get; set; }
       public int MaxHP { get; set; }
+      public int Damage { get; set; }
+      public int MaxDamage { get; set; }
+      public int LazerCount { get; set; }
       public double Velocity { get; set; }
       public double Cooldown { get; set; }
 
@@ -59,8 +63,10 @@ namespace Space
          Level = specs.Level;
          Velocity = specs.Velocity;
          HP = specs.HP;
-         Damage = specs.Damage;
          MaxHP = specs.MaxHP;
+         Damage = specs.Damage;
+         MaxDamage = specs.MaxDamage;
+         LazerCount = specs.LazerCount;
          Cooldown = specs.Cooldown;
       }
 
@@ -102,12 +108,32 @@ namespace Space
             specs.Damage = Damage;
             specs.LifeSpan = 2.0;
             specs.Velocity = 500.0;
-            Laser laser1 = new Laser(Scene, new TransformComponent(TC.Position.X - 18, TC.Position.Y), specs);
-            Laser laser2 = new Laser(Scene, new TransformComponent(TC.Position), specs);
-            Laser laser3 = new Laser(Scene, new TransformComponent(TC.Position.X + 18, TC.Position.Y), specs);
-            Scene.NewActors.Add(laser1);
-            Scene.NewActors.Add(laser2);
-            Scene.NewActors.Add(laser3);
+
+            if (LazerCount == 1)
+            {
+               Laser laser = new Laser(Scene, new TransformComponent(TC.Position), specs);
+
+               Scene.NewActors.Add(laser);
+            }
+            else if (LazerCount == 2)
+            {
+               Laser laser1 = new Laser(Scene, new TransformComponent(TC.Position.X - 18, TC.Position.Y), specs);
+               Laser laser2 = new Laser(Scene, new TransformComponent(TC.Position.X + 18, TC.Position.Y), specs);
+
+               Scene.NewActors.Add(laser1);
+               Scene.NewActors.Add(laser2);
+            }
+            else if (LazerCount == 3)
+            {
+               Laser laser1 = new Laser(Scene, new TransformComponent(TC.Position.X - 18, TC.Position.Y), specs);
+               Laser laser = new Laser(Scene, new TransformComponent(TC.Position), specs);
+               Laser laser3 = new Laser(Scene, new TransformComponent(TC.Position.X + 18, TC.Position.Y), specs);
+
+               Scene.NewActors.Add(laser1);
+               Scene.NewActors.Add(laser);
+               Scene.NewActors.Add(laser3);
+            }
+
             Cooldown = 0.05;
          }
          else
@@ -121,10 +147,6 @@ namespace Space
          HP -= damage;
          if (HP <= 0.0)
             MustBeDestroyed = true;
-      }
-
-      public void OnDestroy()
-      {
       }
    }
 }

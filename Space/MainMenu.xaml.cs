@@ -2,7 +2,6 @@
 using System.Windows;
 using System.Windows.Controls;
 
-
 namespace Space
 {
    public partial class MainMenu : UserControl
