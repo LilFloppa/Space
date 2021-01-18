@@ -27,6 +27,13 @@ namespace Space
             (actor as Asteroid).GetDamage(15);
             ship.GetDamage((actor as Asteroid).HP / 100);
          }
+
+         if (actor is Booster)
+         {
+            (actor as Booster).MustBeDestroyed = true;
+
+            (actor as Booster).ApplyBooster(ship, actor as Booster);
+         }
       }
 
       void ResolveCollisionForLaser(Laser laser, IActor actor)

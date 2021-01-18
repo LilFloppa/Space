@@ -11,7 +11,7 @@ namespace Space
       public Game Game { get; set; }
       public bool endGame;
 
-      List<IActor> ActorsToRemove = new List<IActor>();
+      public List<IActor> ActorsToRemove = new List<IActor>();
 
       public Scene(Game game)
       {

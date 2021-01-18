@@ -25,6 +25,8 @@ namespace Space
       public AssetManager AM { get; set; } = new AssetManager();
       public CollisionResolveManager CRM { get; set; } = new CollisionResolveManager();
 
+      public Ship player { get; set; }
+
       public uint MaxAsteroidCount = 20;
       public uint AsteroidCount = 0;
       public double AsteroidCooldown = 0.0;
@@ -66,9 +68,11 @@ namespace Space
          specs.Velocity = 400.0;
          specs.HP = 5;
          specs.MaxHP = 50;
-         specs.Damage = 15;
+         specs.Damage = 25;
+         specs.MaxDamage = 100;
+         specs.LazerCount = 1;
          specs.Cooldown = 0.3;
-         Ship player = new Ship(Scene, new DrawComponent(AM.GetTexture("Ship.png"), new Size(64.0, 64.0)), new TransformComponent(new Point(200.0, 700.0)), specs);
+         player = new Ship(Scene, new DrawComponent(AM.GetTexture("Ship.png"), new Size(64.0, 64.0)), new TransformComponent(new Point(200.0, 700.0)), specs);
          Scene.NewActors.Add(player);
          PM.CreateBoxComponent(new Size(64.0, 64.0), player);
 
@@ -80,7 +84,7 @@ namespace Space
       public void GameOver(int score, bool success)
       {
          Window.gameOverMenu.GameOverLabel.Content = "Game Over! You " + (success ? "win!" : "lose!");
-         Window.gameOverMenu.ResultLabel.Content = "Result: " + Score;
+         Window.gameOverMenu.ResultLabel.Content = "Result: " + score;
 
          Score = 0;
          Window.Score.Content = "Score: 0";
@@ -100,6 +104,7 @@ namespace Space
 
             PM.BoxComponents.Clear();
             Scene.Actors.Clear();
+            Scene.NewActors.Clear();
          }
       }
 
@@ -118,11 +123,15 @@ namespace Space
 
                int x = random.Next(0, (int)Window.Width);
                int y = random.Next(-500, -100);
+
                TransformComponent TC = new TransformComponent((double)x, (double)y);
-               Asteroid asteroid = new Asteroid(Scene, new DrawComponent(AM.GetTexture("Asteroid.png"), new Size(100.0, 100.0)), TC, specs);
+
+               int size = random.Next(70, 110);
+
+               Asteroid asteroid = new Asteroid(Scene, new DrawComponent(AM.GetTexture("Asteroid.png"), new Size((double)size, (double)size)), TC, specs);
 
                Scene.NewActors.Add(asteroid);
-               PM.CreateBoxComponent(new Size(100.0, 100.0), asteroid);
+               PM.CreateBoxComponent(new Size((double)size, (double)size), asteroid);
 
                AsteroidCount++;
                AsteroidCooldown = 1.5;

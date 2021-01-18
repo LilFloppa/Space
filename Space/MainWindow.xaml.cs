@@ -123,9 +123,7 @@ namespace Space
 
             // Draw Text
             if (actor.Text != null)
-            {
                group.Children.Add(DrawText(actor.Text.Text, actor.Center, actor.RotationAngle));
-            }
          }
 
          group.ClipGeometry = new RectangleGeometry(new Rect(0.0, 0.0, Width, Height));
