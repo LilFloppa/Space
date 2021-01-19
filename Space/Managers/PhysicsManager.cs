@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
 
-namespace Space
+namespace Space.Managers
 {
 	class Collision
 	{

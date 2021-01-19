@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Space
+namespace Space.Managers
 {
    class AssetManager
    {

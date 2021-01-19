@@ -1,6 +1,6 @@
-﻿using Space.Actors;
-using System;
+﻿using System;
 using System.Windows;
+using Space.Managers;
 
 namespace Space
 {
@@ -24,21 +24,22 @@ namespace Space
       public PhysicsManager PM { get; set; } = new PhysicsManager();
       public AssetManager AM { get; set; } = new AssetManager();
       public CollisionResolveManager CRM { get; set; } = new CollisionResolveManager();
+      public AsteroidSpawner AS { get; set; } = null;
 
       public Ship player { get; set; }
-
-      public uint MaxAsteroidCount = 20;
-      public uint AsteroidCount = 0;
-      public double AsteroidCooldown = 0.0;
 
       public int Level { get; set; } = 1;
       public int Score { get; set; } = 0;
       public int MaxScore { get; set; } = 5000;
 
+      public int ScorePerAsteroid { get; set; } = 150;
+
       public Game(MainWindow window)
       {
          Window = window;
          Scene = new Scene(this);
+
+         AS = new AsteroidSpawner(this, 30, 100, 150, 100, 120, 1.7);
       }
 
       public void Update(double dt)
@@ -50,9 +51,8 @@ namespace Space
          foreach (var collision in PM.Collisions)
             CRM.ResolveCollision(collision);
 
+         AS.Update(dt);
          Scene.Update(dt);
-
-         CreateAsteroid(dt);
       }
 
       public void Start()
@@ -81,10 +81,15 @@ namespace Space
          Window.ScoreBar.Maximum = MaxScore;
       }
 
-      public void GameOver(int score, bool success)
+      public void GameOver()
       {
+         Scene.Clear();
+         PM.BoxComponents.Clear();
+
+         bool success = Score >= MaxScore;
+
          Window.gameOverMenu.GameOverLabel.Content = "Game Over! You " + (success ? "win!" : "lose!");
-         Window.gameOverMenu.ResultLabel.Content = "Result: " + score;
+         Window.gameOverMenu.ResultLabel.Content = "Result: " + Score;
 
          Score = 0;
          Window.Score.Content = "Score: 0";
@@ -108,44 +113,9 @@ namespace Space
          }
       }
 
-      void CreateAsteroid(double dt)
+      public void AddScore()
       {
-         if (AsteroidCount < MaxAsteroidCount)
-         {
-            if (AsteroidCooldown < 0.0)
-            {
-               Random random = new Random();
-               AsteroidSpecs specs = new AsteroidSpecs();
-               specs.Direction = new Point(0.0, 1.0);
-               specs.Velocity = random.Next(150, 200);
-               specs.RotationVelocity = random.NextDouble() * 60 + 20;
-               specs.HP = random.Next(300, 900);
-
-               int x = random.Next(0, (int)Window.Width);
-               int y = random.Next(-500, -100);
-
-               TransformComponent TC = new TransformComponent((double)x, (double)y);
-
-               int size = random.Next(70, 110);
-
-               Asteroid asteroid = new Asteroid(Scene, new DrawComponent(AM.GetTexture("Asteroid.png"), new Size((double)size, (double)size)), TC, specs);
-
-               Scene.NewActors.Add(asteroid);
-               PM.CreateBoxComponent(new Size((double)size, (double)size), asteroid);
-
-               AsteroidCount++;
-               AsteroidCooldown = 1.5;
-            }
-            else
-            {
-               AsteroidCooldown -= dt;
-            }
-         }
-      }
-
-      public void ScoreChanged(int score)
-      {
-         Score += score;
+         Score += ScorePerAsteroid;
 
          if (Score < MaxScore)
          {
@@ -153,7 +123,7 @@ namespace Space
             Window.Score.Content = "Score: " + Score;
          }
          else
-            GameOver(Score, true);
+            GameOver();
       }
    }
 }

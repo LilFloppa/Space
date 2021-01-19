@@ -44,7 +44,7 @@ namespace Space.Actors
       void CreateBooster()
       {
          Random random = new Random();
-         int key = random.Next(0, 100);
+         int key = random.Next(40, 100);
 
          if (key > 70 && key <= 100)
          {
@@ -87,16 +87,16 @@ namespace Space.Actors
       {
          currentHP -= damage;
          if (currentHP <= 0.0)
+         {
             MustBeDestroyed = true;
+            Scene.Game.AddScore();
+         }
       }
 
       public override void OnDestroy()
       {
-         Console.WriteLine("ASTEROID DESTROYED!");
-         Scene.Game.AsteroidCount--;
-
-         if (!destroyedByBomb)
-            CreateBooster();
+         Scene.Game.AS.AsteroidCount--;
+         CreateBooster();
       }
    }
 }

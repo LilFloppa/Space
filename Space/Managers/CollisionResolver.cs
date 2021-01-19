@@ -1,7 +1,7 @@
 ﻿using Space.Actors;
 using System;
 
-namespace Space
+namespace Space.Managers
 {
    class CollisionResolveManager
    {
@@ -24,14 +24,13 @@ namespace Space
       {
          if (actor is Asteroid)
          {
-            (actor as Asteroid).GetDamage(15);
-            ship.GetDamage((actor as Asteroid).HP / 100);
+            (actor as Asteroid).MustBeDestroyed = true;
+            ship.GetDamage(5);
          }
 
          if (actor is Booster)
          {
             (actor as Booster).MustBeDestroyed = true;
-
             (actor as Booster).ApplyBooster(ship, actor as Booster);
          }
       }

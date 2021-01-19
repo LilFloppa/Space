@@ -148,5 +148,10 @@ namespace Space
          if (HP <= 0.0)
             MustBeDestroyed = true;
       }
-   }
+
+		public override void OnDestroy()
+		{
+         Scene.Game.GameOver();
+      }
+	}
 }
