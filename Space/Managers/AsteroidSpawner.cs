@@ -5,8 +5,8 @@ using Space.Actors;
 namespace Space.Managers
 {
 
-	class AsteroidSpawner
-	{
+   class AsteroidSpawner
+   {
       Game Game = null;
       public int MaxAsteroidCount = 0;
       public double Intensity = 0.0;
@@ -27,13 +27,13 @@ namespace Space.Managers
       Random random = new Random();
       double CooldownValue = 0.0;
 
-		public AsteroidSpawner(Game game, int maxAsteroidCount, int minAsteroidHealth, int maxAsteroidHealth, int minVelocity, int maxVelocity, double spawnCooldown)
-		{
-			Game = game;
+      public AsteroidSpawner(Game game, int maxAsteroidCount, int minAsteroidHealth, int maxAsteroidHealth, int minVelocity, int maxVelocity, double spawnCooldown)
+      {
+         Game = game;
 
-			MaxAsteroidCount = maxAsteroidCount;
-			MinAsteroidHealth = minAsteroidHealth;
-			MaxAsteroidHealth = maxAsteroidHealth;
+         MaxAsteroidCount = maxAsteroidCount;
+         MinAsteroidHealth = minAsteroidHealth;
+         MaxAsteroidHealth = maxAsteroidHealth;
          MinVelocity = minVelocity;
          MaxVelocity = maxVelocity;
          SpawnCooldown = spawnCooldown;
@@ -48,8 +48,8 @@ namespace Space.Managers
          CurrentMaxVelocity = MaxVelocity + (int)(300 * Intensity);
       }
 
-		public void Update(double dt)
-		{
+      public void Update(double dt)
+      {
          if (AsteroidCount < CurrentMaxAsteroidCount)
          {
             if (CooldownValue < 0.0)
@@ -67,8 +67,8 @@ namespace Space.Managers
          CalculateSpawnerSpecs();
       }
 
-		void SpawnAsteroid()
-		{
+      void SpawnAsteroid()
+      {
          AsteroidSpecs specs = new AsteroidSpecs();
          specs.Direction = new Point(0.0, 1.0);
          specs.Velocity = random.Next(CurrentMinVelocity, CurrentMaxVelocity);
@@ -91,12 +91,12 @@ namespace Space.Managers
       }
 
       void CalculateIntensity()
-		{
+      {
          Intensity = 0.1 + 0.7 * Game.Score / Game.MaxScore;
-		}
+      }
 
       void CalculateSpawnerSpecs()
-		{
+      {
          CurrentMaxAsteroidCount = MaxAsteroidCount + (int)(5 * Game.Level * Intensity);
          CurrentSpawnCooldown = SpawnCooldown * (1.0 - 0.5 * Intensity) / Game.Level;
          CurrentMinAsteroidHealth = MinAsteroidHealth + (int)(300 * Game.Level * Intensity);
@@ -104,5 +104,5 @@ namespace Space.Managers
          CurrentMinVelocity = MinVelocity + (int)(100 * Game.Level * Intensity);
          CurrentMaxVelocity = MaxVelocity + (int)(100 * Game.Level * Intensity);
       }
-	}
+   }
 }

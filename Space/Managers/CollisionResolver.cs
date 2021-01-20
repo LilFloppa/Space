@@ -26,6 +26,12 @@ namespace Space.Managers
          {
             (actor as Asteroid).MustBeDestroyed = true;
             ship.GetDamage(5);
+
+            if (ship.Damage > 5)
+               ship.Damage -= 5;
+
+            if (ship.LazerCount > 1)
+               ship.LazerCount--;
          }
 
          if (actor is Booster)
