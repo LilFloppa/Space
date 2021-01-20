@@ -122,8 +122,10 @@ namespace Space.Actors
 
                break;
             case BoosterType.Shield:
+               ship.CreateShield();
                break;
             case BoosterType.ChainsawShield:
+               ship.CreateCircularSaw();
                break;
             default:
                break;

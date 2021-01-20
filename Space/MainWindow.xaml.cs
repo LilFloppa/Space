@@ -72,7 +72,6 @@ namespace Space
 
          if (game.State == GameState.GameOver)
          {
-
          }
       }
 
@@ -118,7 +117,10 @@ namespace Space
          {
             // Draw Texture
             Rect textureRect = new Rect(new Point(actor.Center.X - actor.DC.TexSize.Width / 2.0, actor.Center.Y - actor.DC.TexSize.Height / 2.0), actor.DC.TexSize);
-            //group.Children.Add(new GeometryDrawing(new ImageBrush(white), null, new RectangleGeometry(actor.BoundingRect)));
+            //if (actor.BC != null)
+            //{
+            //   group.Children.Add(new GeometryDrawing(new ImageBrush(white), null, new RectangleGeometry(actor.BoundingRect)));
+           // }
             group.Children.Add(DrawTexture(textureRect, actor.DC.Texture, actor.Center, actor.RotationAngle));
 
             // Draw Text

@@ -39,7 +39,7 @@ namespace Space
          Window = window;
          Scene = new Scene(this);
 
-         AS = new AsteroidSpawner(this, 30, 100, 150, 100, 120, 1.7);
+         AS = new AsteroidSpawner(this, 30, 400, 500, 100, 120, 1.7);
       }
 
       public void Update(double dt)
@@ -83,9 +83,6 @@ namespace Space
 
       public void GameOver()
       {
-         Scene.Clear();
-         PM.BoxComponents.Clear();
-
          bool success = Score >= MaxScore;
 
          Window.gameOverMenu.GameOverLabel.Content = "Game Over! You " + (success ? "win!" : "lose!");
@@ -106,11 +103,11 @@ namespace Space
             Window.ScoreBar.Maximum = MaxScore;
             Window.menu.LevelLabel.Content = "Level: " + Level;
             Window.menu.TargetLabel.Content = "Target: " + MaxScore;
-
-            PM.BoxComponents.Clear();
-            Scene.Actors.Clear();
-            Scene.NewActors.Clear();
          }
+
+         Scene.Clear();
+         PM.BoxComponents.Clear();
+         AS.AsteroidCount = 0;
       }
 
       public void AddScore()

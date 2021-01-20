@@ -55,6 +55,10 @@ namespace Space
       public double Velocity { get; set; }
       public double Cooldown { get; set; }
 
+      public bool IsInvincible { get; set; } = false;
+      public CircularSaw CircularSaw { get; set; } = null;
+      public Shield Shield { get; set; } = null;
+
       public Ship(Scene scene, DrawComponent dc, TransformComponent tc, ShipSpecs specs) : base(scene, tc, dc)
       {
          Controller = new ShipController(this);
@@ -152,6 +156,44 @@ namespace Space
 		public override void OnDestroy()
 		{
          Scene.Game.GameOver();
+      }
+
+      public void CreateCircularSaw()
+		{
+         if (CircularSaw != null)
+         {
+            CircularSaw.LifeSpan = 5.0;
+         }
+         else
+         {
+            TransformComponent tc = new TransformComponent(Center);
+            Size size = new Size(DC.TexSize.Width * 1.5, DC.TexSize.Height * 1.5);
+            DrawComponent dc = new DrawComponent(Scene.Game.AM.GetTexture("Saw.png"), size);
+            CircularSaw circular = new CircularSaw(Scene, tc, dc, this, 1, 500);
+            Scene.Game.PM.CreateBoxComponent(size, circular);
+
+            CircularSaw = circular;
+            Scene.NewActors.Add(circular);
+         }
+      }
+
+      public void CreateShield()
+		{
+         if (Shield != null)
+         {
+            Shield.LifeSpan = 5.0;
+         }
+         else
+         {
+            TransformComponent tc = new TransformComponent(Center);
+            Size size = new Size(DC.TexSize.Width * 1.5, DC.TexSize.Height * 1.5);
+            DrawComponent dc = new DrawComponent(Scene.Game.AM.GetTexture("Circle.png"), size);
+            Shield shield = new Shield(Scene, tc, dc, this);
+            Scene.Game.PM.CreateBoxComponent(size, shield);
+
+            Shield = shield;
+            Scene.NewActors.Add(shield);
+         }
       }
 	}
 }

@@ -43,6 +43,10 @@ namespace Space
 			ActorsToRemove.Clear();
 		}
 
-		public void Clear() => Actors.Clear();
+		public void Clear()
+		{
+			Actors.Clear();
+			NewActors.Clear();
+		}
 	}
 }

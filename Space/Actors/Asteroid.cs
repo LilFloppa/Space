@@ -44,9 +44,9 @@ namespace Space.Actors
       void CreateBooster()
       {
          Random random = new Random();
-         int key = random.Next(40, 100);
+         int key = random.Next(0, 100);
 
-         if (key > 70 && key <= 100)
+         if (key > 76 && key <= 100)
          {
             BoosterType bt = BoosterType.AddHP;
             BoosterSpecs specs = new BoosterSpecs();
@@ -54,17 +54,17 @@ namespace Space.Actors
             specs.LifeSpan = 4;
             specs.Velocity = 300.0;
 
-            if (key > 70 && key <= 75)
+            if (key > 76 && key <= 80)
                bt = BoosterType.AddHP;
-            else if (key > 75 && key <= 80)
+            else if (key > 80 && key <= 84)
                bt = BoosterType.AddDamage;
-            else if (key > 80 && key <= 85)
+            else if (key > 84 && key <= 88)
                bt = BoosterType.AddLazer;
-            else if (key > 85 && key <= 90)
+            else if (key > 88 && key <= 92)
                bt = BoosterType.Bomb;
-            else if (key > 90 && key <= 95)
+            else if (key > 92 && key <= 96)
                bt = BoosterType.Shield;
-            else if (key > 95 && key <= 100)
+            else if (key > 96 && key <= 100)
                bt = BoosterType.ChainsawShield;
 
             specs.Type = bt;
@@ -96,7 +96,8 @@ namespace Space.Actors
       public override void OnDestroy()
       {
          Scene.Game.AS.AsteroidCount--;
-         CreateBooster();
+         if (!destroyedByBomb && Scene.Game.State != GameState.GameOver)
+            CreateBooster();
       }
    }
 }

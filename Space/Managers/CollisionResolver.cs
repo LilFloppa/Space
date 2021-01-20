@@ -18,14 +18,22 @@ namespace Space.Managers
             ResolveCollisionForShip((Ship)actor1, actor2);
          else if (actor2 is Ship)
             ResolveCollisionForShip((Ship)actor2, actor1);
+         else if (actor1 is CircularSaw)
+            ResolveCollisionForSaw((CircularSaw)actor1, actor2);
+         else if (actor2 is CircularSaw)
+            ResolveCollisionForSaw((CircularSaw)actor2, actor1);
+
       }
 
       void ResolveCollisionForShip(Ship ship, IActor actor)
       {
          if (actor is Asteroid)
          {
-            (actor as Asteroid).MustBeDestroyed = true;
-            ship.GetDamage(5);
+            if (!ship.IsInvincible)
+            {
+               (actor as Asteroid).MustBeDestroyed = true;
+               ship.GetDamage(5);
+            }
          }
 
          if (actor is Booster)
@@ -43,5 +51,11 @@ namespace Space.Managers
             laser.MustBeDestroyed = true;
          }
       }
+
+      void ResolveCollisionForSaw(CircularSaw saw, IActor actor)
+		{
+         if (actor is Asteroid)
+            (actor as Asteroid).GetDamage(saw.Damage);
+		}
    }
 }

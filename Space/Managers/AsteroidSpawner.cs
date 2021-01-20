@@ -85,7 +85,7 @@ namespace Space.Managers
          Asteroid asteroid = new Asteroid(Game.Scene, new DrawComponent(Game.AM.GetTexture("Asteroid.png"), new Size(size, size)), TC, specs);
 
          Game.Scene.NewActors.Add(asteroid);
-         Game.PM.CreateBoxComponent(new Size(size * 0.8, size * 0.8), asteroid);
+         Game.PM.CreateBoxComponent(new Size(size * 0.9, size * 0.9), asteroid);
 
          AsteroidCount++;
       }

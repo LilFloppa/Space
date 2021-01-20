@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,7 +13,9 @@
     <None Remove="Assets\Background.png" />
     <None Remove="Assets\background1.jpg" />
     <None Remove="Assets\background2.jpg" />
+    <None Remove="Assets\Circle.png" />
     <None Remove="Assets\Laser.png" />
+    <None Remove="Assets\Saw.png" />
     <None Remove="Assets\White.png" />
     <None Remove="Background.jpg" />
     <None Remove="S.png" />
@@ -24,7 +27,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Assets\Asteroid.png" />
     <EmbeddedResource Include="Assets\Background.png" />
+    <EmbeddedResource Include="Assets\Circle.png" />
     <EmbeddedResource Include="Assets\Laser.png" />
+    <EmbeddedResource Include="Assets\Saw.png" />
     <EmbeddedResource Include="Assets\Ship.png" />
     <Resource Include="Assets\MenuShip.png" />
     <EmbeddedResource Include="Assets\White.png" />
