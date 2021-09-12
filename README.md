@@ -36,7 +36,8 @@ Destoyed asteroids can drop boosters that help you to destroy asteroids faster.
 |<img src="https://user-images.githubusercontent.com/44492725/132982846-8d7628df-aabb-49c2-84bb-6bd2585bac95.png" width=80 height=80 align=center> | **HP Booster** <br> Increases starship Health Points by 5. |
 |<img src="https://user-images.githubusercontent.com/44492725/132982913-a2287de9-7fc7-442f-8e94-7ff091d856c3.png" width=80 height=80 align=center> | **Laser Booster** <br> 1. Increases number of lasers of starship by 1.<br>2. Minimum and maximum number of lasers are 1 and 3 accordingly.<br>3. Each collision of starship with asteroid decreases number of lasers by 1 until it reaches minimum. |
 |<img src="https://user-images.githubusercontent.com/44492725/132983354-e3151997-4548-49bd-b9a3-616133d813df.png" width=80 height=80 align=center> | **Bomb** <br> 1. When you pick up this booster all visible asteroids destroy.<br>2. Asteroids destoyed with bomb don't drop boosters. |
-|<img src="https://user-images.githubusercontent.com/44492725/132983354-e3151997-4548-49bd-b9a3-616133d813df.png" width=80 height=80 align=center> | **Shield Booster** <br>1. Protects starship from any collision with asteroids.<br>2. Duration - 5 seconds. |
+|<img src="https://user-images.githubusercontent.com/44492725/132995684-cd60303c-418e-4bbf-9f89-bb384dbd2b0b.png" width=80 height=80 align=center> | **Shield Booster** <br>1. Protects starship
+from any collision with asteroids.<br>2. Duration - 5 seconds. |
 |<img src="https://user-images.githubusercontent.com/44492725/132983476-87aca7d7-cb94-4867-9aea-1f3680cf7c55.png" width=80 height=80 align=center> | **Chainsaw Shield Booster**<br> 1. Acts like shield booster but also deal damage to the asteroid when starship collides with it.<br> 2. Duraction - 5 seconds. |
 
 
